@@ -1,0 +1,34 @@
+{
+    "title": "General request to the server",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The id of the job",
+            "type": "string"
+        },
+        "images": {
+            "description": "The images to be processed",
+            "type": "array",
+            "minitems": 1
+        },
+        "ops": {
+            "descrption": "The operations to perform",
+            "type": "array",
+            "minitems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "description": "The type of operation to be perfomed",
+                        "type": "string"
+                    },
+                    "required": ["type"],
+                    "additionalProperties": true
+                }
+            },
+            "minitems": 1
+        },
+        "required": ["id", "images", "ops"],
+        "additionalProperties": false
+    }
+}
