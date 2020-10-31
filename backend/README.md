@@ -1,5 +1,14 @@
 Watercolor's backend. Uses k8 and docker.
-# structure 
+# Setup
+ `
+ #create virtual environment
+ python3 -m venv venv
+ #activate
+ . venv/bin/activate
+ #install flask
+ pip install flask
+ `
+# Structure 
 	api/
 		__init__.py
 		app.py          # this file contains your app and routes
