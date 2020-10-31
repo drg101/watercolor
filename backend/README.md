@@ -21,4 +21,9 @@ Watercolor's backend. Uses k8 and docker.
 
 
 # Running the project
-to run the project do `python app.py` in the api/ folder
+First, activate the python environment:
+	cd watercolor/backend
+	. venv/bin/activate
+to run the project:
+	cd watercolor/backend/api
+	python app.py
