@@ -6,6 +6,8 @@ Watercolor's backend. Uses k8 and docker.
 	. venv/bin/activate
 	#install flask
 	pip install flask
+	#install flask_restful
+	pip install flask_restful
 # Structure 
 	api/
 		__init__.py
