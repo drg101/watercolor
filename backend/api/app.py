@@ -10,4 +10,7 @@ api = Api(app)
 #add resources to api here
 api.add_resource(Example,'/', '/Example')
 if __name__ == '__main__':
-    app.run(debug=True)
+    #running app externally
+    app.run(host='0.0.0.0')
+    #running app for localhost
+    #app.run(debug=True)
