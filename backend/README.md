@@ -1,9 +1,9 @@
 Watercolor's backend. Uses k8 and docker.
 # Setup
 	#create virtual environment
-	python3 -m venv venv
+	conda create --prefix ./env python=3.7
 	#activate
-	. venv/bin/activate
+	conda activate ./env
 	#install flask
 	pip install flask
 	#install flask_restful
