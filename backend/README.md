@@ -1,6 +1,6 @@
 Watercolor's backend. Uses k8 and docker.
 # structure 
-api/
+ api/
 	__init__.py
 	app.py          # this file contains your app and routes
 	resources/
