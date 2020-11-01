@@ -1,13 +1,7 @@
 Watercolor's backend. Uses k8 and docker.
 # Setup
-	#create virtual environment
-	conda create --prefix ./env python=3.7
-	#activate
-	conda activate ./env
-	#install flask
-	pip install flask
-	#install flask_restful
-	pip install flask_restful
+	#create environment from file
+	conda env create -p ./env -f environment.yml
 # Structure 
 	api/
 		__init__.py
@@ -24,7 +18,7 @@ Watercolor's backend. Uses k8 and docker.
 First, activate the python environment:
 
 	cd watercolor/backend
-	. venv/bin/activate
+	conda activate ./env
 to run the project:
 
 	cd watercolor/backend/api
