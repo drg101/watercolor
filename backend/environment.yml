@@ -1,0 +1,9 @@
+name: watercolor
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - flask
+  - python=3.7
+  - flask-restful
+prefix: ./env
