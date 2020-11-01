@@ -5,7 +5,7 @@ Watercolor, a image processing service.
 First, build the image. Navigate to the root of this repository (the same folder
 this README is in!) and execute (with root permissions):
 ```
-# docker build --tag watercolor:0.1 .
+# docker build --t watercolor .
 ```
 
 Wait for it to complete. It may take a while.
