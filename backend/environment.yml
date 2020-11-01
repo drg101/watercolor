@@ -1,4 +1,4 @@
-name: /Users/joseph.riva/Documents/cs370/watercolor/backend/env
+name: watercolor
 channels:
   - conda-forge
   - defaults
@@ -6,4 +6,4 @@ dependencies:
   - flask
   - python=3.7
   - flask-restful
-prefix: /Users/joseph.riva/Documents/cs370/watercolor/backend/env
+prefix: ./env
