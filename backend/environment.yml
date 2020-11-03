@@ -6,4 +6,5 @@ dependencies:
   - flask
   - python=3.7
   - flask-restful
+  - gunicorn
 prefix: ./env
