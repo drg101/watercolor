@@ -6,6 +6,6 @@ RUN cd /watercolor/backend && conda env create -f environment.yml
 RUN echo "conda activate watercolor" > ~/.bashrc
 ENV PATH /opt/conda/envs/watercolor/bin:$PATH
 
-ENTRYPOINT [ "python","/watercolor/backend/api/app.py"]
+ENTRYPOINT [ "python", "-u", "/watercolor/backend/api/app.py"]
 
 EXPOSE 5000
