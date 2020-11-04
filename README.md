@@ -1,6 +1,6 @@
-Watercolor, a image processing service.
+# Watercolor, an image processing service.
 
-# Building and running with Docker
+## Usage
 
 First, build the image. Navigate to the root of this repository (the same folder
 this README is in!) and execute (with root permissions):
@@ -18,3 +18,11 @@ Once done, run the image. Choose a port to listen on for requests, then execute:
 
 The server will then be running.
 
+
+**For example:**
+
+```
+# docker run --publish 8080:5000 --name watercolor watercolor:latest
+```
+
+Will start a docker container named **watercolor** with a server which responds to requests made to **localhost:8080**
