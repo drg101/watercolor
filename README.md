@@ -32,3 +32,4 @@ to test the server with a simple curl request try
 ```
 # curl -X GET -H "Content-Type: application/json" -d '{"test":"obj"}' localhost:5000
 ```
+which should print `{"data": "you ran a GET request", "args": {"test": "obj"}}`
