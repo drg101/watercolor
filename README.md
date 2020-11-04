@@ -30,6 +30,6 @@ Will start a docker container named **watercolor** with a server which responds 
 ## Testing
 to test the server(while the docker container is running) with a simple curl request try 
 ```
-# curl -X GET -H "Content-Type: application/json" -d '{"test":"obj"}' localhost:5000
+# curl -X GET -H "Content-Type: application/json" -d '{"test":"obj"}' localhost:<port>
 ```
 which should print `{"data": "you ran a GET request", "args": {"test": "obj"}}`
