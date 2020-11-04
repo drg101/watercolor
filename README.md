@@ -28,7 +28,7 @@ The server will then be running.
 Will start a docker container named **watercolor** with a server which responds to requests made to **localhost:8080**
 
 ## Testing
-to test the server with a simple curl request try 
+to test the server(while the docker container is running) with a simple curl request try 
 ```
 # curl -X GET -H "Content-Type: application/json" -d '{"test":"obj"}' localhost:5000
 ```
