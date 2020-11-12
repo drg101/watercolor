@@ -1,0 +1,249 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        /*this css is literally copy and pasted from https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/*/
+        #drop-region {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.05);
+            width: 400px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: .3s;
+            margin: auto;
+        }
+
+        #drop-region:hover {
+            box-shadow: 0 0 45px rgba(0, 0, 0, 0.1);
+        }
+
+        #image-preview {
+            margin-top: 20px;
+        }
+
+        #image-preview .image-view {
+            display: inline-block;
+            position: relative;
+            margin-right: 13px;
+            margin-bottom: 13px;
+        }
+
+        #image-preview .image-view img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        #image-preview .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+
+    <style>
+        .centerv {
+            margin: 0;
+            position: relative;
+            top: 50%;
+            -ms-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+        }
+
+        .centerh {
+            margin: 0;
+            position: relative;
+            left: 50%;
+            -ms-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+        }
+
+        body {
+            background-color: darkslategrey;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #centerize {
+            width: 400px;
+            margin: auto;
+        }
+
+        #edits {
+            margin: auto;
+            background-color: gray;
+            color: black;
+            border-radius: 3px;
+        }
+
+        #edit-container {
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="centerize" class="centerv">
+        <div id="drop-region" class="centerh">
+            <div class="drop-message">
+                Drag & Drop images or click to upload
+            </div>
+            <div id="image-preview"></div>
+        </div>
+        <div id=edit-container>
+            <div class="centerh">
+                <label for="edits">Choose an Edit:</label>
+                <select id="edits">
+                    <option value="upscale">Upscale</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //this code is literally copy and pasted from https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/
+        function handleFiles(files) {
+            for (var i = 0, len = files.length; i < len; i++) {
+                if (validateImage(files[i]))
+                    previewAnduploadImage(files[i]);
+            }
+        }
+
+        function validateImage(image) {
+            // check the type
+            var validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (validTypes.indexOf(image.type) === -1) {
+                alert("Invalid File Type");
+                return false;
+            }
+
+            // check the size
+            var maxSizeInBytes = 10e6; // 10MB
+            if (image.size > maxSizeInBytes) {
+                alert("File too large");
+                return false;
+            }
+
+            return true;
+        }
+
+        function previewAnduploadImage(image) {
+
+            // container
+            var imgView = document.createElement("div");
+            imgView.className = "image-view";
+            imagePreviewRegion.appendChild(imgView);
+
+            // previewing image
+            var img = document.createElement("img");
+            imgView.appendChild(img);
+
+            // read the image...
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(image);
+
+            // create FormData
+            var formData = new FormData();
+            formData.append('image', image);
+
+        }
+
+        var // where files are dropped + file selector is opened
+            dropRegion = document.getElementById("drop-region"),
+            // where images are previewed
+            imagePreviewRegion = document.getElementById("image-preview");
+
+        // open file selector when clicked on the drop region
+        var fakeInput = document.createElement("input");
+        fakeInput.type = "file";
+        fakeInput.accept = "image/*";
+        fakeInput.multiple = true;
+        dropRegion.addEventListener('click', function () {
+            fakeInput.click();
+        });
+
+
+        fakeInput.addEventListener("change", function () {
+            var files = fakeInput.files;
+            handleFiles(files);
+        });
+
+        function preventDefault(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        dropRegion.addEventListener('dragenter', preventDefault, false);
+        dropRegion.addEventListener('dragleave', preventDefault, false);
+        dropRegion.addEventListener('dragover', preventDefault, false);
+        dropRegion.addEventListener('drop', preventDefault, false);
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer,
+                files = dt.files;
+
+            if (files.length) {
+
+                handleFiles(files);
+
+            } else {
+
+                // check for img
+                var html = dt.getData('text/html'),
+                    match = html && /\bsrc="?([^"\s]+)"?\s*/.exec(html),
+                    url = match && match[1];
+
+
+
+                if (url) {
+                    uploadImageFromURL(url);
+                    return;
+                }
+
+            }
+
+
+            function uploadImageFromURL(url) {
+                var img = new Image;
+                var c = document.createElement("canvas");
+                var ctx = c.getContext("2d");
+
+                img.onload = function () {
+                    c.width = this.naturalWidth;     // update canvas size to match image
+                    c.height = this.naturalHeight;
+                    ctx.drawImage(this, 0, 0);       // draw in image
+                    c.toBlob(function (blob) {        // get content as PNG blob
+
+                        // call our main function
+                        handleFiles([blob]);
+
+                    }, "image/png");
+                };
+                img.onerror = function () {
+                    alert("Error in uploading");
+                }
+                img.crossOrigin = "";              // if from different origin
+                img.src = url;
+            }
+
+        }
+
+        dropRegion.addEventListener('drop', handleDrop, false);
+
+    </script>
+</body>
+
+</html>
