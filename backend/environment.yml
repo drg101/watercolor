@@ -7,4 +7,5 @@ dependencies:
   - python=3.7
   - flask-restful
   - gunicorn
+  - flask-cors
 prefix: ./env
