@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 
@@ -109,6 +110,33 @@
             </div>
         </div>
     </div>
+
+    <script>
+        fetch('http://concord.cs.colostate.edu:8080/').then(function (response) {
+            // The API call was successful!
+            console.log(response);
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response);
+            }
+        }).then(function (data) {
+            // This is the JSON from our response
+            console.log(data);
+        }).catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+        });
+        // $.ajax({
+        //     url: "http://concord.cs.colostate.edu:8080/",
+        //     success: function (data) {
+        //         $('#data').text(data);
+        //     },
+        //     error: function () {
+        //         alert("There was an error.");
+        //     }
+        // });
+    </script>
 
     <script>
         //this code is literally copy and pasted from https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/
