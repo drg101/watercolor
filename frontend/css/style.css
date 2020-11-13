@@ -1,0 +1,39 @@
+body {
+    background-color: #2c2f33;
+    font-family: 'Roboto', sans-serif;
+}
+
+.centerv {
+    margin: 0;
+    position: relative;
+    top: 50%;
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+.centerh {
+    margin: 0;
+    position: relative;
+    left: 50%;
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
+
+#centerize {
+    width: 400px;
+    margin: auto;
+}
+
+#operations {
+    margin: auto;
+    background-color: lightgray;
+    color: black;
+    border-radius: 3px;
+}
+
+.edit-container {
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
