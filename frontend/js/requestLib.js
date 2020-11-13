@@ -80,10 +80,26 @@ function makeRequest(serverURL, imageArray, operators) {
     }).then(function (data) {
         // This is the JSON from our response
         console.log(data);
+        downloadResponse(data.images);
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);
     });
 }
 
+/**
+* Downloads the images
+* @function makeRequest
+* @param {Array<string>} imageArray - Base 64 array of images
+*/
+function downloadResponse(imageArray){
+    for(let i = 0; i < imageArray.length; i++){
+        const a = document.createElement("a");
+        a.href = imageArray[i];
+        a.download = `image${i}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a); 
+    }
+}
 
