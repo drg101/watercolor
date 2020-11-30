@@ -4,3 +4,6 @@ Watercolor's frontend
 
 Open `index.html` on the browser of your choice.
 That's it.
+
+# On Linux
+run `sudo openconnect --protocol=pulse https://secure.colostate.edu/2fa` to connect to VPN
