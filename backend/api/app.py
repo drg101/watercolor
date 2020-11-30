@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 #import resources here
 from resources.Example import Example
 
 #setting up app
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 #add resources to api here

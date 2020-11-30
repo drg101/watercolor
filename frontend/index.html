@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <link href="css/imageDragAndDrop.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="centerize" class="centerv">
+        <div id="drop-region" class="centerh">
+            <div class="drop-message">
+                Drag & Drop images or click to upload
+            </div>
+            <div id="image-preview"></div>
+        </div>
+
+        <!--Operator Dropdown-->
+        <div class=edit-container>
+            <div class="centerh">
+                <label for="operations">Choose an Operation:</label>
+                <select id="operations">
+                    <option value="upscale">Upscale</option>
+                </select>
+            </div>
+        </div>
+
+        <!--Server Choice-->
+        <div class=edit-container>
+            <div class="centerh">
+                <label for="server">Choose a server url:</label>
+                <input type="text" id="server" value="http://concord.cs.colostate.edu:8080/"> 
+            </div>
+        </div>
+
+        <!--Button to send request-->
+        <div class=edit-container>
+            <button class="centerh" onclick="buildRequest();">Run Request!</button>
+        </div>
+
+    </div>
+
+    <!--Scripts down here-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+
+    <script src="js/requestLib.js"></script>
+    <script src="js/imageDragAndDrop.js"></script>
+</body>
+
+</html>
