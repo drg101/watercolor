@@ -1,0 +1,14 @@
+INF_PREFIX="\e[1;34m[INF]\e[0m"
+SUC_PREFIX="\e[1;32m[OK]\e[0m"
+ERR_PREFIX="\e[1;31m[ERROR]\e[0m"
+
+exec_and_test() {
+    $1
+    RET_CODE=$?
+    if [[ $RET_CODE -ne 0 ]]; then
+        echo -e "$ERR_PREFIX $2 (exited with code $RET_CODE)"
+        echo -e "$ERR_PREFIX See above for details."
+        exit 1
+    fi
+    echo -e "$SUC_PREFIX Success!"
+}

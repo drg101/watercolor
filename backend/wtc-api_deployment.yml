@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wtc-api
+  labels:
+      app: wtc-api
+      run: wtc-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wtc-api
+      run: wtc-api
+  template:
+    metadata:
+      labels:
+        app: wtc-api
+        run: wtc-api
+    spec:
+      containers:
+        - name: wtc-api
+          image: wtc-api:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 5000
+

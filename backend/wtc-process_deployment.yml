@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wtc-process
+  labels:
+      app: wtc-process
+      run: wtc-process
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wtc-process
+      run: wtc-process
+  template:
+    metadata:
+      labels:
+        app: wtc-process
+        run: wtc-process
+    spec:
+      containers:
+        - name: wtc-process
+          image: wtc-process:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 32017
+

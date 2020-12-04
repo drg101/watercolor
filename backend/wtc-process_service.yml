@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wtc-process
+  labels:
+    run: wtc-process
+spec:
+  ports:
+  - port: 32017
+    targetPort: 32017
+    protocol: TCP
+  selector:
+    run: wtc-process
+

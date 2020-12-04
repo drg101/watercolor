@@ -1,11 +1,7 @@
-name: watercolor
+name: watercolor-processing
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - flask
   - python=3.7
-  - flask-restful
-  - gunicorn
-  - flask-cors
 prefix: ./env
