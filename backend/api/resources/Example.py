@@ -4,34 +4,6 @@ from flask import request
 import socket
 import os
 
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-print("FUCK")
-
-# see ../../processing/process.py for an explanation of this.
 backend_address = "127.0.0.1"
 backend_port = 32017
 try:
