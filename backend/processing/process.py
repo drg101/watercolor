@@ -1,6 +1,8 @@
 import socket
 import os
 
+#import cv2
+#from cv2 import dnn_superres
 #
 # This file is provided as a minimial example for how the backend must
 # interact with the rest of Watercolor.
@@ -27,34 +29,66 @@ sock = socket.socket()
 sock.bind((address, port))
 sock.listen()
 
+# found on stackoverflow: https://stackoverflow.com/questions/27428936/python-size-of-message-to-send-via-socket
+def get_msg_size(conn):
+    buf = b''
+    while True:
+        c = conn.recv(1)
+        if c == b'|':
+            return int(buf.decode())
+        buf += c
+def upscale(b64str):
+    sr = dnn_superres.DnnSuperResImpl_create()
+
+    image = cv2.imread('./examples/input.jpg')
+
+    model_path = "./models/EDSR_x3.pb"
+    sr.readModel(model_path)
+
+    #"edsr" or "fsrcnn"
+    sr.setModel("edsr", 3)
+
+    result = sr.upsample(image)
+
+    cv2.imwrite("./examples/output/input_scaled.jpg", result)
 while (True):
-    # This starts the connection.
-    # The program will wait at the .accept call until it recieves a message.
-    # The "connection" variable is a NEW socket between this server and the
-    # connected client. Use it to send data back and forth, NOT "sock".
-    (connection, client_address) = sock.accept()
-    print("Opened a connection with {}".format(client_address))
+    try:
+        # This starts the connection.
+        # The program will wait at the .accept call until it recieves a message.
+        # The "connection" variable is a NEW socket between this server and the
+        # connected client. Use it to send data back and forth, NOT "sock".
+        (connection, client_address) = sock.accept()
+        print("Opened a connection with {}".format(client_address), flush=True)
+        
+        m_size = get_msg_size(connection)
+        print("Size of message: ", m_size, flush=True)
+        connection.send("Recieved size.".encode())
 
-    # This is how to recieve data.
-    # The 4096 is just the internal buffer size and is NOT the amount of 
-    # data recieved.
-    data_from_client = connection.recv(4096)
+        # This is how to recieve data.
+        # The 4096 is just the internal buffer size and is NOT the amount of 
+        # data recieved.
+        tot_data = b''
+        #continue to recieve data we have recieved the whole message
+        while(len(tot_data) < m_size):
+            data = connection.recv(4096)
+            #print("data chunk size: ", type(data), len(data), flush=True)
+            tot_data += data
+            #print("tot_data size: ", type(tot_data), len(tot_data), flush=True)
+        print(f"finished recieving data\ntot_data size: {len(tot_data)}", flush=True)
+       
+        reply_size = str(len(tot_data)) + '|'
+        connection.send(reply_size.encode())
+        s_reply = connection.recv(128)
+        print(f"Sent size of reply_data to API and recieve reply: {s_reply.decode()}", flush=True)
 
-    # Since the sockets connect with raw bytes over TCP, we cannot directly
-    # send/recieve strings. We need to encode/decode them into/from their raw
-    # byte representation, which is what actually gets sent over the wire.
-    # Here, we print "data_from_client" without decoding it. But if we wanted
-    # the string itself, we'd need to do:
-    # data_from_client.decode()
-    print("Got data from the client:")
-    print(data_from_client)
-
-    # To send a string, we must encode it. See the above comment.
-    connection.send("Got your message".encode())
-
+        connection.sendall(tot_data)
+        reply = connection.recv(128)
+        print(f"Sent Data to API and recieved reply: {reply.decode()}", flush=True)
+    except Exception as e:
+        print(f"Caught an Exception: {e}", flush=True)
     # ALWAYS CLOSE THE CONNECTION WHEN YOU'RE DONE SENDING DATA.
     # Networking 101, friends (?)
-    connection.close()
-
-    print("Closed the connection with {}".format(client_address))
+    finally:
+        connection.close()
+        print("Closed the connection with {}".format(client_address), flush=True)
 
