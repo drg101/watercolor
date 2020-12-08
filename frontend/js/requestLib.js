@@ -30,10 +30,10 @@ function buildRequest() {
         base64ImageArray.push(image.src);
 
         ++loadingCounter;
-        setLoading(loadingCounter > 0);
         makeRequest(serverURL, base64ImageArray, ops, namesArray);
     }
-
+    setMaxLoads(loadingCounter);
+    setLoading(loadingCounter);
 
     for (let i = 0; i < DOMImages.length; i++) { //cant use iterator 
         if (!DOMImages[i].name) //images which have names are the ones to be upscaled
@@ -74,9 +74,9 @@ function makeRequest(serverURL, imageArray, operators, namesArray) {
     }
     ).then(function (response) {
         // The API call was successful!
-        
+
         --loadingCounter;
-        setLoading(loadingCounter > 0);
+        setLoading(loadingCounter);
 
         if (response.ok) {
             return response.json();
