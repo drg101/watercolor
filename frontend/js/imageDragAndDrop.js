@@ -8,7 +8,7 @@ function handleFiles(files) {
 
 function validateImage(image) {
     // check the type
-    var validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    var validTypes = ['image/jpeg', 'image/png'];
     if (validTypes.indexOf(image.type) === -1) {
         alert("Invalid File Type");
         return false;
@@ -25,7 +25,6 @@ function validateImage(image) {
 }
 
 function previewAnduploadImage(image) {
-
     // container
     var imgView = document.createElement("div");
     imgView.className = "image-view";
@@ -41,7 +40,7 @@ function previewAnduploadImage(image) {
         img.src = e.target.result;
     }
     reader.readAsDataURL(image);
-
+    img.name = image.name;
     // create FormData
     var formData = new FormData();
     formData.append('image', image);
@@ -59,6 +58,7 @@ fakeInput.type = "file";
 fakeInput.accept = "image/*";
 fakeInput.multiple = true;
 dropRegion.addEventListener('click', function () {
+    fakeInput.value = null;
     fakeInput.click();
 });
 
@@ -83,7 +83,6 @@ function handleDrop(e) {
         files = dt.files;
 
     if (files.length) {
-
         handleFiles(files);
 
     } else {
@@ -113,7 +112,6 @@ function handleDrop(e) {
             c.height = this.naturalHeight;
             ctx.drawImage(this, 0, 0);       // draw in image
             c.toBlob(function (blob) {        // get content as PNG blob
-
                 // call our main function
                 handleFiles([blob]);
 

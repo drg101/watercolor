@@ -32,8 +32,7 @@ function buildRequest() {
     }
 
     //now collect the ops
-    let ops = [];
-    ops.push({ "type": document.getElementById("operations").value });
+    let ops = [{ "type": "upscale" }];
     //to-add: the dropdown should allow multiple op solection
 
     //now get the serverURL
@@ -62,9 +61,10 @@ function makeRequest(serverURL, imageArray, operators) {
         "ops": operators
     }
 
-    console.log("Sent a request: ");
+    console.log("Sending a request: ");
     console.log(q);
     console.log("---------------");
+
     fetch(serverURL, {
         method: 'POST', // fetch doesnt allow GET to have a body so gotta do POST
         headers: {
