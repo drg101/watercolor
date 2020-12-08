@@ -18,7 +18,7 @@ function buildRequest() {
 
     for (image of DOMImages)
         base64ImageArray.push(image.src);
-    
+
 
 
     if (base64ImageArray.length == 0) { //if image array is empty, block further execution
@@ -62,7 +62,9 @@ function makeRequest(serverURL, imageArray, operators) {
         "ops": operators
     }
 
-
+    console.log("Sent a request: ");
+    console.log(q);
+    console.log("---------------");
     fetch(serverURL, {
         method: 'POST', // fetch doesnt allow GET to have a body so gotta do POST
         headers: {
@@ -79,7 +81,9 @@ function makeRequest(serverURL, imageArray, operators) {
         }
     }).then(function (data) {
         // This is the JSON from our response
+        console.log("Received a response: ");
         console.log(data);
+        console.log("---------------");
         downloadResponse(data.images);
     }).catch(function (err) {
         // There was an error
@@ -92,23 +96,23 @@ function makeRequest(serverURL, imageArray, operators) {
 * @function makeRequest
 * @param {Array<string>} imageArray - Base 64 array of images
 */
-function downloadResponse(imageArray){
-    for(let i = 0; i < imageArray.length; i++){
+function downloadResponse(imageArray) {
+    for (let i = 0; i < imageArray.length; i++) {
         const a = document.createElement("a");
         a.href = imageArray[i];
-        
-	//header tells type of image
-	header = imageArray[i].split(",")[0]
-	img_type = header.split("/")[1]
-	img_type = img_type.split(";")[0]
-	if(img_type == "png"){
-	    a.download = `image${i}.png`;
-	}else{
-	    a.download = `image${i}.jpeg`;
-	}
+
+        //header tells type of image
+        header = imageArray[i].split(",")[0]
+        img_type = header.split("/")[1]
+        img_type = img_type.split(";")[0]
+        if (img_type == "png") {
+            a.download = `image${i}.png`;
+        } else {
+            a.download = `image${i}.jpeg`;
+        }
         document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a); 
+        document.body.removeChild(a);
     }
 }
 
