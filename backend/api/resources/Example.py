@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 
 import socket
+import traceback
 import os
 
 backend_address = "127.0.0.1"
@@ -42,51 +43,51 @@ class Example(Resource):
             images = []
             # Process the images by sending them to the processing backend.
             for image_uri in request.json['images']:
-                #image_uri has a header and data seperated by a ','
-                header, data = image_uri.split(",", 1)
-                print("header: ", header)
-                print("data[0:100]: ", data[0:100])
-                #encoded is a utf-8 encoded version of the base64 string representing the image
-                encoded = data.encode()
-                enc_size = len(encoded)
-                #send size of message first --  send "size|"
-                s_enc_size = str(enc_size) + '|'
-                sock.sendall(s_enc_size.encode())
-                reply = sock.recv(128)
-                print(f"sent size and recieved reply: {reply.decode()}", flush=True)
+                try:
+                    #image_uri has a header and data seperated by a ','
+                    header, data = image_uri.split(",", 1)
+                    print("header: ", header)
+                    print("data[0:100]: ", data[0:100])
+                    #encoded is a utf-8 encoded version of the base64 string representing the image
+                    encoded = data.encode()
+                    enc_size = len(encoded)
+                    #send size of message first --  send "size|"
+                    s_enc_size = str(enc_size) + '|'
+                    sock.sendall(s_enc_size.encode())
+                    reply = sock.recv(128)
+                    print(f"sent size and recieved reply: {reply.decode()}", flush=True)
 
-                print("image length: ", enc_size, flush=True)
-                # assumes that "image" is a string, hopefully of the base64 variety!
-                # this will cause a TypeError if "image" is not a bytes-like object.
-                sock.sendall(encoded)
-                print("Sent one image to backend", flush=True)
-                
-                ''' recieve reply data from backend '''
-                reply_size = get_msg_size(sock) 
-                sock.send("Recieved reply_size".encode()) 
-                print(f"Recieved reply_size: {reply_size}", flush=True)
+                    print("image length: ", enc_size, flush=True)
+                    # assumes that "image" is a string, hopefully of the base64 variety!
+                    # this will cause a TypeError if "image" is not a bytes-like object.
+                    sock.sendall(encoded)
+                    print("Sent one image to backend", flush=True)
+                    
+                    ''' recieve reply data from backend '''
+                    reply_size = get_msg_size(sock) 
+                    sock.send("Recieved reply_size".encode()) 
+                    print(f"Recieved reply_size: {reply_size}", flush=True)
 
-                ''' add back uri header '''
-                reply_data = header + ','
-                reply_data = reply_data.encode()
-                while len(reply_data) < reply_size:
-                    reply_data += sock.recv(4096)
-                print("reply_data size: ", len(reply_data), flush=True)
-                sock.send("recieved data from backend".encode())
-                
-                print(f"beginning of reply_data: {reply_data[0:100]}")
-                images.append(reply_data.decode())
+                    ''' add back uri header '''
+                    reply_data = header + ','
+                    reply_data = reply_data.encode()
+                    while len(reply_data) < reply_size:
+                        reply_data += sock.recv(4096)
+                    print("reply_data size: ", len(reply_data), flush=True)
+                    sock.send("recieved data from backend".encode())
+                    
+                    print(f"beginning of reply_data: {reply_data[0:100]}")
+                    images.append(reply_data.decode())
+                except Exception as e:
+                    print(f"Caught Exception: {e}", flush=True)
+                    traceback.print_exc()
             print("Finished sending data to backend.", flush=True)
-            #print("Recieved response from backend: {}".format(reply_data.decode()), flush=True)
-            #reply = sock.recv(4096)
-            #print("Recieved response  from backend: {}".format(reply.decode()), flush=True)
         except Exception as e:
-            print(f"Caught an Exception:{e}", flush=True)
+            traceback.print_exc()
         finally:
             sock.close()
             print("closing socket", flush=True)
-        # ----
-        print("Sending response to client.")
+        print("sending image to frontend")
         return {
             'id': request.json['id'], # echo back the id
             'images': images, # for now, echo back the images
