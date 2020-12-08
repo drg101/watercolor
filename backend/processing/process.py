@@ -77,12 +77,14 @@ def img_to_str(img, img_type):
 def upscale(image):
     sr = dnn_superres.DnnSuperResImpl_create()
 
-    model_path = Path("/watercolor-processing/models/EDSR_x3.pb")
+    edsr_model_path = Path("/watercolor-processing/models/EDSR_x3.pb")
+    fsr_model_path = Path("/watercolor-processing/models/FSRCNN_x3.pb")
+
     #print("model path: ", model_path, flush=True)
-    sr.readModel(str(model_path))
+    sr.readModel(str(fsr_model_path))
 
     #"edsr" or "fsrcnn"
-    sr.setModel("edsr", 3)
+    sr.setModel("fsrcnn", 3)
     print(f"started upscaling image with shape: {image.shape}")
     result = sr.upsample(image)
     print(f"finished upscaling image: {result.shape}")
@@ -130,15 +132,15 @@ while (True):
         
         if(is_png):
             #add back the alpha channel
-            res_img[:,:,3] = 0
-            res_img[:,:,3] = alpha_channel
-            print(f"PNG-->new_shape: {res_img.shape}")
+            res_img = cv2.cvtColor(res_img, cv2.COLOR_BGR2BGRA)
+            #res_img[:,:,3] = alpha_channel
+            print(f"Result PNG-->new_shape: {res_img.shape}")
         img_suffix = '.png' if is_png else '.jpg'
         print(f"suffix: {img_suffix}") 
         res_str = img_to_str(res_img, img_suffix)
 
         send_reply(res_str.encode())   
-    except Exception as e:
+    except:
         traceback.print_exc()
         #print(f"Caught an Exception: {e}\ntype: {type(e)}", flush=True)
     # ALWAYS CLOSE THE CONNECTION WHEN YOU'RE DONE SENDING DATA.

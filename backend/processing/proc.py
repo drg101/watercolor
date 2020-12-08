@@ -8,13 +8,13 @@ from cv2 import dnn_superres
 sr = dnn_superres.DnnSuperResImpl_create()
 
 image = cv2.imread('./examples/butterfly.png')
-print("read image")
+print(f"read image, shape: {image.shape}")
 
-model_path = "./models/EDSR_x3.pb"
+model_path = "./models/FSRCNN_x3.pb"
 sr.readModel(model_path)
 print("read model")
 #"edsr" or "fsrcnn"
-sr.setModel("edsr", 3)
+sr.setModel("fsrcnn", 3)
 
 print("starting upsampling")
 result = sr.upsample(image)
