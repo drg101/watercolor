@@ -16,8 +16,9 @@ function buildRequest() {
 
     let DOMImages = document.getElementsByTagName("img");
 
-    for (image of DOMImages)
+    for (image of DOMImages){
         base64ImageArray.push(image.src);
+    }
 
 
 

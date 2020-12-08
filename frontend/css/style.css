@@ -1,6 +1,8 @@
 body {
     background-color: #2c2f33;
     font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .centerv {
@@ -36,4 +38,16 @@ body {
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+}
+
+.head{
+    height: 100px;
+    width: 100%;
+    background-color: black;
+}
+
+.logoImg{
+    height: 100px;
+    width: 472px;
+    transform: translate(-20px, 0);
 }
