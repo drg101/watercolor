@@ -96,7 +96,16 @@ function downloadResponse(imageArray){
     for(let i = 0; i < imageArray.length; i++){
         const a = document.createElement("a");
         a.href = imageArray[i];
-        a.download = `image${i}.png`;
+        
+	//header tells type of image
+	header = imageArray[i].split(",")[0]
+	img_type = header.split("/")[1]
+	img_type = img_type.split(";")[0]
+	if(img_type == "png"){
+	    a.download = `image${i}.png`;
+	}else{
+	    a.download = `image${i}.jpeg`;
+	}
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a); 

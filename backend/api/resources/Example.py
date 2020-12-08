@@ -41,9 +41,13 @@ class Example(Resource):
             
             images = []
             # Process the images by sending them to the processing backend.
-            for image in request.json['images']:
+            for image_uri in request.json['images']:
+                #image_uri has a header and data seperated by a ','
+                header, data = image_uri.split(",", 1)
+                print("header: ", header)
+                print("data[0:100]: ", data[0:100])
                 #encoded is a utf-8 encoded version of the base64 string representing the image
-                encoded = image.encode()
+                encoded = data.encode()
                 enc_size = len(encoded)
                 #send size of message first --  send "size|"
                 s_enc_size = str(enc_size) + '|'
@@ -62,11 +66,15 @@ class Example(Resource):
                 sock.send("Recieved reply_size".encode()) 
                 print(f"Recieved reply_size: {reply_size}", flush=True)
 
-                reply_data = b''
+                ''' add back uri header '''
+                reply_data = header + ','
+                reply_data = reply_data.encode()
                 while len(reply_data) < reply_size:
                     reply_data += sock.recv(4096)
                 print("reply_data size: ", len(reply_data), flush=True)
                 sock.send("recieved data from backend".encode())
+                
+                print(f"beginning of reply_data: {reply_data[0:100]}")
                 images.append(reply_data.decode())
             print("Finished sending data to backend.", flush=True)
             #print("Recieved response from backend: {}".format(reply_data.decode()), flush=True)
@@ -78,6 +86,7 @@ class Example(Resource):
             sock.close()
             print("closing socket", flush=True)
         # ----
+        print("Sending response to client.")
         return {
             'id': request.json['id'], # echo back the id
             'images': images, # for now, echo back the images
