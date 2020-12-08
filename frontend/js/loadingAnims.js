@@ -8,4 +8,5 @@
 function setLoading(loading){
     //document.getElementById("loader").style.display = loading ? "block" : "none";
     document.getElementById("loader").style.left = loading ? 0 : window.innerWidth;
+    
 }
