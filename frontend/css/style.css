@@ -3,6 +3,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .centerv {
@@ -59,7 +60,13 @@ body {
     height: 100%;
     z-index: 1111;
     position: absolute;
-    left:0;
+    left:1500;
     top:0;
-    display: none;
+}
+
+.loadAlert{
+    color:white;
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
 }

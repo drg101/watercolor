@@ -4,6 +4,8 @@
  * @dependencies uuid
  */
 
+
+let loadingCounter = 0;
 /**
 * Builds the request then auto-calls @function makeRequest
 * This is called by the request button
@@ -27,6 +29,8 @@ function buildRequest() {
         namesArray.push(image.name.split(".")[0]);
         base64ImageArray.push(image.src);
 
+        ++loadingCounter;
+        setLoading(loadingCounter > 0);
         makeRequest(serverURL, base64ImageArray, ops, namesArray);
     }
 
@@ -40,7 +44,6 @@ function buildRequest() {
 
     return true; //return true cause success
 }
-
 
 /**
 * Makes the ajax request to the server
@@ -61,6 +64,7 @@ function makeRequest(serverURL, imageArray, operators, namesArray) {
     console.log(q);
     console.log("---------------");
 
+    
     fetch(serverURL, {
         method: 'POST', // fetch doesnt allow GET to have a body so gotta do POST
         headers: {
@@ -70,6 +74,10 @@ function makeRequest(serverURL, imageArray, operators, namesArray) {
     }
     ).then(function (response) {
         // The API call was successful!
+        
+        --loadingCounter;
+        setLoading(loadingCounter > 0);
+
         if (response.ok) {
             return response.json();
         } else {
