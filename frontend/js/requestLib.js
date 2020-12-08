@@ -8,43 +8,37 @@
 * Builds the request then auto-calls @function makeRequest
 * This is called by the request button
 * @function buildRequest
-* @returns {Object} an object with the serverURL, imageArray, and Operators
+* @returns {boolean} true if successful
 */
 function buildRequest() {
     //first collect images as base64 and shove them into an array
-    let base64ImageArray = []; //make array
 
     let DOMImages = document.getElementsByTagName("img");
 
-    for (image of DOMImages){
-        base64ImageArray.push(image.src);
-    }
-
-
-
-    if (base64ImageArray.length == 0) { //if image array is empty, block further execution
-        return false;
-    }
-    else { //clear out the images we just collected
-        for (let i = 0; i < DOMImages.length; i++) { //cant use iterator 
-            image.parentNode.parentNode.removeChild(DOMImages[i].parentNode); //lol
-            i--; //removed an element so decrement iterator
-        }
-    }
-
-    //now collect the ops
-    let ops = [{ "type": "upscale" }];
-    //to-add: the dropdown should allow multiple op solection
-
-    //now get the serverURL
+    const ops = [{ "type": "upscale" }];
     const serverURL = document.getElementById("server").value;
 
+    for (image of DOMImages) {
+        if (!image.name) //images which have names are the ones to be upscaled
+            continue;
 
-    //auto make request:
-    makeRequest(serverURL, base64ImageArray, ops);
+        let namesArray = []; //names array for re-downloading
+        let base64ImageArray = []; //array wrapper for image
+        namesArray.push(image.name.split(".")[0]);
+        base64ImageArray.push(image.src);
 
-    //return stuff
-    return { images: base64ImageArray, ops: ops, serverURL: serverURL };
+        makeRequest(serverURL, base64ImageArray, ops, namesArray);
+    }
+
+
+    for (let i = 0; i < DOMImages.length; i++) { //cant use iterator 
+        if (!DOMImages[i].name) //images which have names are the ones to be upscaled
+            continue;
+        DOMImages[i].parentNode.parentNode.removeChild(DOMImages[i].parentNode); //lol
+        i--; //removed an element so decrement iterator
+    }
+
+    return true; //return true cause success
 }
 
 
@@ -53,9 +47,10 @@ function buildRequest() {
 * @function makeRequest
 * @param {Array<string>} imageArray - Base 64 array of images
 * @param {Array<Object>} operators - Operators to be performed on the images format {"type":"<type of op>", *}
+* @param {Array<string>} namesArray - names of the files being uploaded, this is simply for downloading formality
 * @returns {string} id of request sent
 */
-function makeRequest(serverURL, imageArray, operators) {
+function makeRequest(serverURL, imageArray, operators, namesArray) {
     const q = {
         "id": uuidv4(), //much secure
         "images": imageArray,
@@ -85,7 +80,7 @@ function makeRequest(serverURL, imageArray, operators) {
         console.log("Received a response: ");
         console.log(data);
         console.log("---------------");
-        downloadResponse(data.images);
+        downloadResponse(data.images, namesArray);
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);
@@ -96,8 +91,9 @@ function makeRequest(serverURL, imageArray, operators) {
 * Downloads the images
 * @function makeRequest
 * @param {Array<string>} imageArray - Base 64 array of images
+* @param {Array<string>} namesArray - names of the files being downloaded, this is simply for downloading formality
 */
-function downloadResponse(imageArray) {
+function downloadResponse(imageArray, namesArray) {
     for (let i = 0; i < imageArray.length; i++) {
         const a = document.createElement("a");
         a.href = imageArray[i];
@@ -107,9 +103,9 @@ function downloadResponse(imageArray) {
         img_type = header.split("/")[1]
         img_type = img_type.split(";")[0]
         if (img_type == "png") {
-            a.download = `image${i}.png`;
+            a.download = `${namesArray[i]}_upscaled.png`;
         } else {
-            a.download = `image${i}.jpeg`;
+            a.download = `${namesArray[i]}_upscaled.jpeg`;
         }
         document.body.appendChild(a);
         a.click();
