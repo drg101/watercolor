@@ -1,5 +1,5 @@
-# Watercolor, an image processing service.
-
+# Watercolor, an batch image upscaling service.
+[Read the Paper](https://drive.google.com/file/d/1PzlfL3u_YCR4NGQu_GzBmSFIPpEi4upc/view?usp=sharing)
 ## Usage
 
 ### Deploying to minikube
