@@ -45,17 +45,30 @@ function previewAnduploadImage(image) {
     var img = document.createElement("img");
 
     var imgRep = new Image;
+    let flag = false;
+    let val = (1200 * 1200);
+
+    imgRep.onload = function(){
+        if(flag){
+            if (imgRep.width * imgRep.height > val) {
+                alert("Image Dimensions too large! width * height must be < " + val);
+                imagePreviewRegion.removeChild(imgView);
+                return false;
+            }
+        }
+    }
 
     // read the image...
     var reader = new FileReader();
     reader.onload = function (e) {
         imgRep.src = e.target.result;
-        let val = (1200 * 1200);
         if (imgRep.width * imgRep.height > val) {
             alert("Image Dimensions too large! width * height must be < " + val);
             return false;
         }
         else{
+            if(imgRep.width * imgRep.height === 0)
+                flag = true;
             img.src = e.target.result;
             imagePreviewRegion.appendChild(imgView);
             imgView.appendChild(img);
