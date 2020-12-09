@@ -81,10 +81,10 @@ def upscale(image):
     fsr_model_path = Path("/watercolor-processing/models/FSRCNN_x3.pb")
 
     #print("model path: ", model_path, flush=True)
-    sr.readModel(str(edsr_model_path))
+    sr.readModel(str(fsr_model_path))
 
     #"edsr" or "fsrcnn"
-    sr.setModel("edsr", 3)
+    sr.setModel("fsrcnn", 3)
     print(f"started upscaling image with shape: {image.shape}")
     result = sr.upsample(image)
     print(f"finished upscaling image: {result.shape}")
