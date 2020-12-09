@@ -1,4 +1,6 @@
 //this code is literally copy and pasted from https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/
+const val = (1200 * 1200);
+
 function handleFiles(files) {
     for (var i = 0, len = files.length; i < len; i++) {
         if (validateImage(files[i]))
@@ -12,7 +14,7 @@ function validateImage(image) {
     if (validTypes.indexOf(image.type) === -1) {
         alert("Invalid File Type");
         return false;
-    }
+    } 
 
     // check the size
     var maxSizeInBytes = 10e6; // 10MB
@@ -46,7 +48,6 @@ function previewAnduploadImage(image) {
 
     var imgRep = new Image;
     let flag = false;
-    let val = (1200 * 1200);
 
     imgRep.onload = function(){
         if(flag){
