@@ -21,6 +21,18 @@ function validateImage(image) {
         return false;
     }
 
+
+    var img = new Image;
+    img.onload = function () {
+        let val = (1200 * 1200);
+
+    };
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        img.src = e.target.result;
+    }
+    reader.readAsDataURL(image);
+
     return true;
 }
 
@@ -28,19 +40,31 @@ function previewAnduploadImage(image) {
     // container
     var imgView = document.createElement("div");
     imgView.className = "image-view";
-    imagePreviewRegion.appendChild(imgView);
 
     // previewing image
     var img = document.createElement("img");
-    imgView.appendChild(img);
+
+    var imgRep = new Image;
 
     // read the image...
     var reader = new FileReader();
     reader.onload = function (e) {
-        img.src = e.target.result;
+        imgRep.src = e.target.result;
+        let val = (1200 * 1200);
+        if (imgRep.width * imgRep.height > val) {
+            alert("Image Dimensions too large! width * height must be < " + val);
+            return false;
+        }
+        else{
+            img.src = e.target.result;
+            imagePreviewRegion.appendChild(imgView);
+            imgView.appendChild(img);
+        }
     }
     reader.readAsDataURL(image);
     img.name = image.name;
+
+
     // create FormData
     var formData = new FormData();
     formData.append('image', image);
