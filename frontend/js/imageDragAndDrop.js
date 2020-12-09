@@ -1,4 +1,6 @@
 //this code is literally copy and pasted from https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/
+const val = (1200 * 1200);
+
 function handleFiles(files) {
     for (var i = 0, len = files.length; i < len; i++) {
         if (validateImage(files[i]))
@@ -8,11 +10,11 @@ function handleFiles(files) {
 
 function validateImage(image) {
     // check the type
-    var validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    var validTypes = ['image/jpeg', 'image/png'];
     if (validTypes.indexOf(image.type) === -1) {
         alert("Invalid File Type");
         return false;
-    }
+    } 
 
     // check the size
     var maxSizeInBytes = 10e6; // 10MB
@@ -21,26 +23,61 @@ function validateImage(image) {
         return false;
     }
 
-    return true;
-}
 
-function previewAnduploadImage(image) {
+    var img = new Image;
+    img.onload = function () {
+        let val = (1200 * 1200);
 
-    // container
-    var imgView = document.createElement("div");
-    imgView.className = "image-view";
-    imagePreviewRegion.appendChild(imgView);
-
-    // previewing image
-    var img = document.createElement("img");
-    imgView.appendChild(img);
-
-    // read the image...
+    };
     var reader = new FileReader();
     reader.onload = function (e) {
         img.src = e.target.result;
     }
     reader.readAsDataURL(image);
+
+    return true;
+}
+
+function previewAnduploadImage(image) {
+    // container
+    var imgView = document.createElement("div");
+    imgView.className = "image-view";
+
+    // previewing image
+    var img = document.createElement("img");
+
+    var imgRep = new Image;
+    let flag = false;
+
+    imgRep.onload = function(){
+        if(flag){
+            if (imgRep.width * imgRep.height > val) {
+                alert("Image Dimensions too large! width * height must be < " + val);
+                imagePreviewRegion.removeChild(imgView);
+                return false;
+            }
+        }
+    }
+
+    // read the image...
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        imgRep.src = e.target.result;
+        if (imgRep.width * imgRep.height > val) {
+            alert("Image Dimensions too large! width * height must be < " + val);
+            return false;
+        }
+        else{
+            if(imgRep.width * imgRep.height === 0)
+                flag = true;
+            img.src = e.target.result;
+            imagePreviewRegion.appendChild(imgView);
+            imgView.appendChild(img);
+        }
+    }
+    reader.readAsDataURL(image);
+    img.name = image.name;
+
 
     // create FormData
     var formData = new FormData();
@@ -59,6 +96,7 @@ fakeInput.type = "file";
 fakeInput.accept = "image/*";
 fakeInput.multiple = true;
 dropRegion.addEventListener('click', function () {
+    fakeInput.value = null;
     fakeInput.click();
 });
 
@@ -83,7 +121,6 @@ function handleDrop(e) {
         files = dt.files;
 
     if (files.length) {
-
         handleFiles(files);
 
     } else {
@@ -113,7 +150,6 @@ function handleDrop(e) {
             c.height = this.naturalHeight;
             ctx.drawImage(this, 0, 0);       // draw in image
             c.toBlob(function (blob) {        // get content as PNG blob
-
                 // call our main function
                 handleFiles([blob]);
 

@@ -2,34 +2,30 @@
 
 ## Usage
 
-First, build the image. Navigate to the root of this repository (the same folder
-this README is in!) and execute (with root permissions):
-```
-# docker build -t watercolor .
-```
+### Deploying to minikube
 
-Wait for it to complete. It may take a while.
+First, ensure `minikube` is running:
 
-Once done, run the image. Choose a port to listen on for requests, then execute:
+`minikube start --driver=docker`
 
-```
-# docker run --publish <port>:5000 --name watercolor watercolor:latest
-```
+Then, to deploy the backend to the cluster, run:
 
-The server will then be running.
+`./backend/deploy.sh`
 
+Consult the README in the `backend/` folder for more information.
 
-**For example:**
+### Individual containers
 
-```
-# docker run --publish 8080:5000 --name watercolor watercolor:latest
-```
+You can also build and run the individual docker images that make up
+Watercolor without a Kubernetes cluster. 
 
-Will start a docker container named **watercolor** with a server which responds to requests made to **localhost:8080**
+Building:
 
-## Testing
-to test the server(while the docker container is running) with a simple curl request try 
-```
-# curl -X GET -H "Content-Type: application/json" -d '{"test":"obj"}' localhost:<port>
-```
-which should print `{"data": "you ran a GET request", "args": {"test": "obj"}}`
+`docker build ./backend/api -t wtc-api`
+`docker build ./backend/processing -t wtc-process`
+
+Running:
+`docker run --publish <port>:5000 --name watercolor-api wtc-api`
+`docker run --publish <port>:32017 --name watecolor-processing wtc-process`
+
+Consult the README in the `backend/` folder for more information.

@@ -1,6 +1,9 @@
 <html>
 
 <head>
+    <title>Watercolor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 
@@ -9,6 +12,7 @@
 </head>
 
 <body>
+    <div class="head"><img src="assets/logo.png" class="logoImg"></div>
     <div id="centerize" class="centerv">
         <div id="drop-region" class="centerh">
             <div class="drop-message">
@@ -18,20 +22,20 @@
         </div>
 
         <!--Operator Dropdown-->
-        <div class=edit-container>
+        <!--<div class=edit-container>
             <div class="centerh">
                 <label for="operations">Choose an Operation:</label>
                 <select id="operations">
                     <option value="upscale">Upscale</option>
                 </select>
             </div>
-        </div>
+        </div>-->
 
         <!--Server Choice-->
         <div class=edit-container>
             <div class="centerh">
                 <label for="server">Choose a server url:</label>
-                <input type="text" id="server" value="http://concord.cs.colostate.edu:8080/"> 
+                <input type="text" id="server" value="http://earth.cs.colostate.edu:2020/"> 
             </div>
         </div>
 
@@ -39,12 +43,18 @@
         <div class=edit-container>
             <button class="centerh" onclick="buildRequest();">Run Request!</button>
         </div>
+    </div>
 
+    <!--Cover for loading-->
+    <div class="loadingCover" id="loader">
+        <img src="assets/ball-triangle.svg" class="centerh centerv" height="200" width="200" style="top:40%;">
+        <div class="loadAlert centerv" id="loadLabel">We are upscaling your images, this may take a moment.</div>
     </div>
 
     <!--Scripts down here-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
 
+    <script src="js/loadingAnims.js"></script>
     <script src="js/requestLib.js"></script>
     <script src="js/imageDragAndDrop.js"></script>
 </body>
