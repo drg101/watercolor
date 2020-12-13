@@ -2,6 +2,9 @@
 [Read the Paper](https://drive.google.com/file/d/1PzlfL3u_YCR4NGQu_GzBmSFIPpEi4upc/view?usp=sharing) 
 
 [Example Video](https://drive.google.com/file/d/1rqIlqT6vM0F6K8rm1HCJzbU2FUOzveyB/view)
+
+When watching the example video make sure the video player is on 1080p HD, not the auto which is usually 720p so
+that you can see the full resolution of images.
 ## Usage
 
 ### Deploying to minikube
