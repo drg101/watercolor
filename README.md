@@ -1,4 +1,4 @@
-# Watercolor, a batch image upscaling service.
+# Watercolor, a batch AI image upscaling service.
 [Read the Paper](https://drive.google.com/file/d/1PzlfL3u_YCR4NGQu_GzBmSFIPpEi4upc/view?usp=sharing) 
 
 [Example Video](https://drive.google.com/file/d/1rqIlqT6vM0F6K8rm1HCJzbU2FUOzveyB/view)
